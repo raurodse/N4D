@@ -10,3 +10,4 @@ What do i need for start?
         chmod 400 /etc/n4d/key  
         chown root:root /etc/n4d/key
 
+* You need create digital certificate, because n4d uses ssl communication.
