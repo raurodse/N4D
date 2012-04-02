@@ -2,7 +2,7 @@ AUTHORS:
 --------
 Hector Garcia Huerta hectorgh@gmail.com  
 Raul Rodrigo Segura raurodse@gmail.com  
-What do i need for start?
+What do i need for starting?
 -------------------------
 * Make file key in folder /etc/n4d/ containing a master secret key. This file is only readable and writable by root user. On Linux you can execute :
 
@@ -17,4 +17,10 @@ Previously you has created folder /etc/n4d/cert. You can use openssl for create 
         openssl genrsa -out /etc/n4d/cert/n4dkey.pem 2048
         yes '' | openssl req -new -key /etc/n4d/cert/n4dkey.pem -out /etc/n4d/cert/n4d.csr
         openssl x509 -req -days 600 -in /etc/n4d/cert/n4d.csr -signkey /etc/n4d/cert/n4dkey.pem -out /etc/n4d/cert/n4dcert.pem
+
+For installing
+--------------
+
+	./setup.py install --install-data=/
+
 
