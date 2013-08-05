@@ -1,0 +1,30 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          n4d
+# Required-Start: $remote_fs
+# Required-Stop:  $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: Execute the reboot command.
+# Description:
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+	initctl emit --no-wait n4d-start
+        ;;
+  restart|reload|force-reload)
+        #
+        ;;
+  stop)
+        initctl emit --no-wait n4d-stop
+        ;;
+  *)
+        echo "Usage: $0 start" >&2
+        exit 3
+        ;;
+esac

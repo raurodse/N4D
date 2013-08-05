@@ -1,0 +1,47 @@
+have n4d-vars &&
+_n4d-vars() 
+{
+    local cur prev opts base selected
+
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    selected=${COMP_WORDS[1]}
+    #echo ${selected}
+    #echo ${COMP_CWORD}
+    #
+    #  The basic options we'll complete.
+    #
+   
+
+    case "${prev}" in
+	getvalues | setvalue | initvalues )
+	    local running=$(ls /var/lib/n4d/variables-dir/ )
+	    COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+            return 0
+            ;;
+        *)
+		case "${selected}" in
+			getvalues | initvalues )
+				local running=$(ls /var/lib/n4d/variables-dir/ )
+				COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+				return 0
+			;;
+		
+			setvalue | listvars | createjson | initvalues | readinbox | emptytrash | help )
+				return 0
+			;;
+		
+			*)
+				opts="getvalues listvars createjson setvalue initvalues readinbox emptytrash help"
+				COMPREPLY=($(compgen -W "${opts}" -- ${cur}))  
+				return 0
+				
+			;;
+		esac
+        ;;
+    esac
+
+
+}
+[ "$have" ] && complete -F _n4d-vars n4d-vars

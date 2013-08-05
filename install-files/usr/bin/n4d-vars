@@ -1,0 +1,325 @@
+#!/usr/bin/env python
+
+import xmlrpclib
+import sys
+import json
+import os
+import readline
+import subprocess
+
+
+class N4dVars:
+	
+	def __init__(self):
+		
+		self.commands=["getvalues","listvars","initvalues","setvalue","readinbox","emptytrash","createjson","help"]
+		self.client=xmlrpclib.ServerProxy("https://localhost:9779",allow_none=True)
+		self.var_path="/var/lib/n4d/variables-dir/"
+		
+	#def init
+	
+	def readkey(self):
+		try:
+			f=open("/etc/n4d/key")
+			key=f.readline().strip()
+			f.close()
+			return key
+		except:
+			return None
+		
+	#def readkey
+	
+	def getvalues(self,variable_list):
+		
+		
+		try:
+			variables=self.client.get_variable_list("","VariablesManager",variable_list)
+			
+			ret=self.client.listvars("","VariablesManager",False,variables)
+			if len(ret)>0:
+				print(ret)
+			
+		except Exception as e:
+			print(e)
+			sys.exit(1)
+		
+	#def getvalues
+	
+	def listvars(self):
+		try:
+			print(self.client.listvars("","VariablesManager"))
+		except Exception as e:
+			print(e)
+			sys.exit(1)
+	
+	#def listvars
+	
+	def initvalues(self,variable_list):
+		
+		key=self.readkey()
+		ok=True
+		if key!=None:
+			for item in variable_list:
+				try:
+					status,ret=self.client.init_variable(key,"VariablesManager",item)
+				except Exception as e:
+					status=False
+					ret=str(e)
+				
+				print("> Initializing " + item + " ... " + str(status))
+				if not status:
+					ok=False
+					print("\t[!] "+str(ret))
+					
+			if ok:
+				sys.exit(0)
+			else:
+				sys.exit(1)
+		else:
+			print("[!] Error reading n4d key. You need root priviledges")
+			sys.exit(1)
+		
+		
+	#def initvalues
+	
+	def setvalue(self,variable,value):
+		
+		key=self.readkey()
+
+		if key!=None:
+			try:
+				ret=self.client.set_variable(key,"VariablesManager",variable,value)
+				print(ret)
+			except Exception as e:
+				print(e)
+				sys.exit(1)
+		else:
+			print("[!] Error reading n4d key. You need root priviledges")
+			sys.exit(1)
+				
+		
+	#def setvalue
+	
+	def readinbox(self):
+		try:
+			key=self.readkey()
+			if key!=None:
+				self.client.read_inbox(key,"VariablesManager",True)
+			else:
+				print("[!] Error reading n4d key. You need root priviledges")
+		except Exception as e:
+			print(str(e))
+			sys.exit(1)
+				
+		
+	#def readinbox
+	
+	def emptytrash(self):
+		try:
+			key=self.readkey()
+			if key!=None:
+				self.client.empty_trash(key,"VariablesManager",True)
+			else:
+				print("[!] Error reading n4d key. You need root priviledges")
+		except Exception as e:
+			print(e)
+			sys.exit(1)
+		
+
+	#def emptytrash
+	
+	def createjson(self,vars,output=None):
+		
+		print("* Creating json file based on variables" + str(vars) + " ...")
+		package_info=str(raw_input("* Enter package name: "))
+
+		ok=False
+		dic={}
+			
+
+		for var in vars:
+			ok=False
+			dic[var]={}
+			print("* ["+var+"] info...")
+			while not ok:
+
+
+				print("* ["+var+"] Dependency type:" )
+				print("\t[1] Initialization dependency")
+				print("\t[2] Read dependency")
+				ret=(str(raw_input("> ")))	
+				
+				if ret=="1":
+					ok=True
+					dic[var]["packages"]=[]
+					dic[var]["packages"].append(package_info)
+					dic[var]["value"]=None
+					dic[var]["description"]=raw_input("* ["+var+"] Enter variable description: ").decode("utf-8")
+					default_function="lliurex.variables."+var.lower()+".init"
+					readline.set_startup_hook(lambda: readline.insert_text(default_function)) 
+					dic[var]["function"]=str(raw_input("* ["+var+"] Enter initialization function name: "))
+					readline.set_startup_hook(None)
+
+					
+				if ret=="2":
+					ok=True
+					dic[var]["packages"]=[]
+					dic[var]["packages"].append(package_info)
+				
+				if not ok:
+					print("[!] Please enter 1 or 2")
+				
+		if output==None:
+			print("\n# Copy and paste this into your n4d variables file:")
+			data=unicode(json.dumps(dic,indent=4,encoding="utf-8",ensure_ascii=False)).encode("utf-8")
+			print("\n"+str(data)+"\n")
+		else:
+			print("* Writting file " + output + " ...")
+			f=open(output,"w")
+			data=unicode(json.dumps(dic,indent=4,encoding="utf-8",ensure_ascii=False)).encode("utf-8")
+			f.write(str(data))
+			f.close()
+			print("* Done!")
+			
+		
+	#def createjson
+	
+	
+	def usage(self):
+		
+		print("USAGE: n4d-vars OPTION [PARAMETERS]\n")
+		print("Options:")
+		print("\tgetvalues VAR1 [VAR2...VARn]")
+		print("\tlistvars")
+		print("\tcreatejson VAR1 [VAR2...VARn] [--output OUTPUTFILE]")
+		print("")
+		print("\tsetvalue VAR VALUE")
+		print("\tinitvalues VAR1 [VAR2...VARn]")
+		print("\treadinbox")
+		print("\temptytrash\n")
+		
+		
+	#def usage
+	
+	def parse_input(self,data):
+
+		if len(data) <2 :
+			self.usage()
+		else:
+			if data[1] not in self.commands:
+				self.usage()
+			else:
+				if data[1]=="getvalues":
+					if self.is_n4d_running():
+						self.getvalues(data[2:])
+					else:
+						self.offline_getvars(data[2:])
+				if data[1]=="listvars":
+					if self.is_n4d_running():
+						self.listvars()
+					else:
+						self.offline_getvars([],True)
+				if data[1]=="createjson":
+					try:
+						if "--output" in data:
+							output=data[len(data)-1]
+							vars=data[2:len(data)-2]
+						else:
+							output=None
+							vars=data[2:]
+					except:
+						self.usage()
+						sys.exit(0)
+						
+					self.createjson(vars,output)
+					
+				if data[1]=="setvalue":
+					try:
+						var=data[2]
+						value=data[3]
+					except:
+						self.usage()
+						sys.exit(0)
+					
+					self.setvalue(var,value)
+					
+						
+				if data[1]=="initvalues":
+					self.initvalues(data[2:])
+				if data[1]=="readinbox":
+					self.readinbox()
+				if data[1]=="emptytrash":
+					self.emptytrash()
+				if data[1]=="help":
+					self.usage()
+		
+	#def parse_input
+	
+	def offline_getvars(self,var_list,ret_full=False):
+		
+		ret={}
+		
+		for item in os.listdir(self.var_path):
+			try:
+				f=open(self.var_path+item)
+				x=json.load(f)
+				f.close()
+				ret=dict(ret.items()+x.items())
+			except Exception as e:
+				print e
+				
+		
+		tmp={}
+		
+		for item in ret.keys():
+			if ret[item].has_key("value"):
+				if ret[item]["value"]!=None:
+					tmp[item]=ret[item]["value"]
+		
+		ret=tmp
+		
+		for item in var_list:
+			if item not in ret.keys():
+				try:
+					x=xmlrpclib.ServerProxy("https://localhost:9779")
+					var=x.get_variable("","VariablesManager",item)
+					if var!=None:
+						ret[item]=var
+				except:
+					break
+					
+		
+		if not ret_full:
+			for item in var_list:
+				if item in ret.keys():
+					print(item+"='"+str(ret[item])+"';")
+		else:
+			for item in ret:
+				
+				print(item+"='"+str(ret[item])+"';")
+		
+		
+		
+	#def offline_getvars
+	
+	
+	def is_n4d_running(self):
+		
+		p=subprocess.Popen(["status","n4d"],stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()[0]
+		if "start/running" in p:
+			return True
+		else:
+			return False
+	
+#class N4dVars
+
+if __name__=="__main__":
+	
+	n4d=N4dVars()
+	n4d.parse_input(sys.argv)
+	
+	
+
+	#n4d.getvalues(["VARIABLE1","VARIABLE2"])
+	#n4d.listvars()
+	#n4d.readkey()

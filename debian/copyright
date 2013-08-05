@@ -1,0 +1,25 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: n4d
+Upstream-Contact: Hector Garcia Huerta <hectorgh@gmail.com>
+		  Raul Rodrigo Segura <raurodse@gmail.com>
+Source: http://svn.lliurex.net/pandora/n4d/trunk/
+
+Files: *
+Copyright: Copyleft 2011 Hector Garcia Huerta <hectorgh@gmail.com>
+	   Copyleft 2011 Raul Rodrigo Segura <raurodse@gmail.com>
+License: GPL-3+
+
+Files: install-files/usr/share/n4d/xmlrpc-server/server.py
+Copyright: Laszlo Nagy
+	   Andrew Yinger
+	   Hector Garcia Huerta <hectorgh@gmail.com>
+License: CC 3.0 BY SA
+
+License: GPL-3+
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 3, or (at your option)
+        any later version.
+        on any Debian system you can find a copy of the newest GNU GPL at
+        '/usr/share/common-licenses/GPL'
+

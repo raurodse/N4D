@@ -1,0 +1,238 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
+import re
+import string
+import unicodedata
+import os
+
+
+def strip_special_chars(s):
+	return ''.join(e for e in s if e.isalnum())
+
+class Hola:
+	
+	def uno(self):
+		pass
+		
+	def dos(self):
+		pass
+		
+	def tres__cuatro(self):
+		pass
+
+	#def tres:
+	
+#class
+
+
+class N4dCreateConf :
+	
+	def __init__(self,file_path,file_type):
+		
+		if file_type=="python":
+			self.create_python_conf(file_path)
+
+		if file_type=="binary":
+			self.create_binary_conf(file_path)
+		
+		if file_type=="remote":
+			self.create_remote_conf()
+		
+		
+	#def __init__
+	
+	
+	def create_remote_conf(self):
+		
+		print "[n4d-create-conf] This is a remote conf file example you should create yourself"
+		print ""
+		print "[SETUP]"
+		print "type=remote"
+		print "remoteip=10.0.0.1"
+		print "order=500"
+		print "[METHODS]"
+		print "get_file_from_server=admin,admins"
+		print "send_file_to_server=admin,admins"
+		
+		print ""
+		print "\tThe lower the order value is, the higher preference it has"
+		print "\tas there might be other remote files supporting those methods.\n"
+		
+	#def create_remote_conf
+	
+	def create_binary_conf(self,file_path):
+		tmp=file_path.split("/")
+		bin_file=tmp[len(tmp)-1]
+		f=open(bin_file+"_conf",'w')
+		f.write("[SETUP]\n")
+		f.write("type=binary\n")
+		f.write("path="+bin_file+"\n")
+		f.write("class="+strip_special_chars(bin_file)+"\n")
+		f.write("perms=adm,admins\n")
+		f.close()
+		print "[n4d-create-conf] File " + sys.path[0] + "/" + bin_file + "_conf created!"
+		print "\t[!] You should edit group permissions in order to be a valid n4d conf file [!]"
+	#def create_binary_conf
+		
+	#def create_binary
+	
+	def create_python_conf(self,file_path):
+		
+		print "[n4d-create-conf] Reading file: " + file_path + " ... "
+		
+		try:
+			f=open(file_path,'r')
+			file_lines=f.readlines()
+			f.close()
+		except:
+			print "[!] File not found !! [!]"
+			sys.exit(1)
+			
+		self.class_names=[]
+		self.method_names={}
+		#print file_lines
+		class_name=None
+		for line in file_lines:
+				
+			class_pattern="^class\s*\w+\s*:"
+			method_pattern="\s+def\s*\w+\s*\(\\s*\w+\s*(,{1}\s*\w+(=.*){0,1})*\s*\)\s*:"
+			#print re.search(method_pattern,line)
+			if re.search(class_pattern,line)!=None:
+				tmp=line.strip("\n")
+				class_name = tmp.split(" ")[1].strip(":")
+				self.class_names.append(class_name)
+				
+			if re.search(method_pattern,line)!=None:
+				tmp=line.strip("\n")
+				tmp=tmp.lstrip(" ")
+				method_name=tmp.split(" ")[1]
+				method_name=method_name.split("(")[0]
+				if method_name.find("__")!=0:
+					if not self.method_names.has_key(class_name):
+						self.method_names[class_name]=[]
+					self.method_names[class_name].append(method_name)
+					
+			
+		print "[n4d-create-conf] The following classes were found:"
+			
+		count=1
+		class_list=[]
+		for item in self.method_names:
+			class_list.append(item)
+			print "\t(" + str(count) + ") " + "Class: " + item
+			for method in self.method_names[item]:
+				print "\t\tMethod: " + method
+			count+=1
+			
+		if len(class_list) >0 :
+			print "[n4d-create-conf] Please, select the class you want your conf file based on:"
+			ok=False
+			while(not ok):
+				try:
+					ret=input()
+					selected=int(ret)-1
+					ok=True
+				except:
+					num=""
+					for i in range(0,len(count_list)):
+						num+=str(i+1) + ","
+							
+					num=num.strip(",")
+						
+					print "Please input one of the following numbers: [" + num + "]"
+				
+		else:
+			selected=0
+				
+		print "[n4d-create-conf] Creating conf file based on class "  + class_list[selected] + " ... "
+			
+		f=open(class_list[selected],'w')
+			
+		f.write("[SETUP]\n")
+		f.write("type=python\n")
+		tmp=file_path.split("/")
+		pyfile=tmp[len(tmp)-1]
+		f.write("path=" + pyfile + "\n")
+		f.write("class=" + class_list[selected] + "\n")
+		f.write("[METHODS]\n")
+		for method in self.method_names[class_list[selected]]:
+			f.write(method + "=adm,admins\n")
+		f.close()
+			
+		print "[n4d-create-conf] File " + os.getcwd() + "/" + class_list[selected] + " created!"
+		print "\t[!] You should edit group permissions to it in order to be a valid n4d conf file [!]"
+			
+	#def create_python_conf
+
+	
+	
+	def hola(self,params):
+		pass
+	#def hola
+	
+	def adios (self) :
+		pass
+	#def adios
+	
+	
+#class N4d_Create_Conf
+
+def usage():
+	
+	print "USAGE:"
+	print "\tn4d-create-conf -i PLUGIN_FILE -t {python|binary}"
+	print "\tn4d-create-conf -t remote"
+	
+	
+#def usage
+
+
+
+if __name__=="__main__":
+	
+	if len(sys.argv)==1:
+		usage()
+		sys.exit(0)
+		
+	read=True
+	count=1
+	input_file=""
+	file_type=""
+	
+	while(read):
+		if sys.argv[count]=="-i":
+			try:
+				input_file=sys.argv[count+1]
+			except:
+				pass
+		elif sys.argv[count]=="-t":
+			try:
+				file_type=sys.argv[count+1]
+			except:
+				pass
+		if count < len(sys.argv) -1:
+			count+=1
+		else:
+			read=False
+
+	if file_type=="" and input_file=="":
+		usage()
+		sys.exit(0)
+		
+	if (file_type=="binary" or file_type=="python") and input_file=="":
+		usage()
+		sys.exit(0)
+	
+	if file_type !="python" and file_type!="binary" and file_type!="remote":
+		usage()
+		sys.exit(0)
+	
+	n4d=N4dCreateConf(input_file,file_type)
+		
+	
+	
+	
+	#n4d_create_conf=N4dCreateConf("n4d-create-conf.py")
+	

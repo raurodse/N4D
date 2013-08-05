@@ -1,0 +1,6 @@
+[SETUP]
+type=python
+path=SendFile.py
+class=SendFile
+[METHODS]
+send_file_to_ip=anonymous

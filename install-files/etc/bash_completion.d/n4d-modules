@@ -1,0 +1,20 @@
+have n4d-modules &&
+_n4d-modules() 
+{
+    local cur prev opts base
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    #
+    #  The basic options we'll complete.
+    #
+    opts="list-enabled list-disabled list-controlled-services list-uncontrolled-services enable-plugin disable-plugin enable-control disable-control load-module load-new-modules help"
+
+
+
+
+   COMPREPLY=($(compgen -W "${opts}" -- ${cur}))  
+   return 0
+}
+[ "$have" ] && complete -F _n4d-modules n4d-modules

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+set -e
+FILESECRET="/etc/n4d/key"
+CERTPATH="/etc/n4d/cert/"
+CERTNAME="n4d"
+case "$1" in
+   configure)
+	if [ ! -e "$FILESECRET" ]; then
+		cat /dev/urandom 2>/dev/null | tr -dc '0-9a-zA-Z' 2>/dev/null |{ head -c 50;echo ""; } > $FILESECRET
+	fi
+	chmod 400 $FILESECRET
+	chown root:root $FILESECRET
+	
+	/usr/share/n4d/certgen/n4d-certgen
+	
+   ;;
+
+   abort-upgrade|abort-remove|abort-deconfigure)
+   ;;
+
+   *)
+       exit 1
+   ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

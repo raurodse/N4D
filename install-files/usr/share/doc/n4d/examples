@@ -1,0 +1,245 @@
+**********************************
+****      Python plugin         ******
+**********************************
+
+### Fichero que ha de estar en /usr/share/n4d/python-plugins
+# Example.py
+
+class Example:
+
+	def __init__(self):
+	
+		self.example_variable=5
+	
+	#def __init__
+	
+	def return_example_variable(self):
+		
+		return self.example_variable
+	
+	#def return_example_variable
+	
+	def add(self,a,b):
+	
+		return a+b
+	
+	#def add
+
+
+#class Example
+
+###
+
+Los plugins de n4d pueden acceder a variables o funciones definidas en el fichero core.py del paquete n4d 
+(variables definidas fuera de la definicion de la clase core). Si quisieramos tener alguna variable o 
+funcion comun para una serie de plugins, bastaria con dejar en el directorio /usr/share/n4d/custom-variables 
+un fichero .py con la definicion de esas funciones y variables.
+
+El uso de estas variables se realiza de la misma manera que si fueran variables y funciones locales, fuera de 
+la clase que estamos desarrollando.
+
+
+## Para crear ficheros de configuracion existe el binario n4d-create-conf. El fichero de configuracion sera creado
+# en el directorio base en el que se este ejecutando n4d-create-conf
+
+USAGE:
+	n4d-create-conf -i PLUGIN_FILE -t {python|binary}
+	n4d-create-conf -t remote
+
+##
+
+### Fichero que de configuracion de la clase que ha de estar en /etc/n4d/conf.d 
+# n4d-create-conf -i Example.py -t python
+# example. 
+
+[SETUP]
+type=python
+path=Example.py
+class=Example
+[METHODS]
+return_example_variable=admin,admins,teachers,anonymous
+add=admin,admins,teachers
+
+###
+
+Este es un fichero que define la configuracion de esta clase en el servicio:
+- Es de tipo python
+- El fichero de la clase que queremos importar se llama Example.py (localizado en /usr/share/n4d/python-plugins)
+- El nombre de la clase que exportamos, en nuestro caso Example. La razon es poder tener funciones con el mismo 
+  nombre en diferentes clases
+- La lista de metodos que queremos exportar y su correspondiente lista de grupos a los que permitimos la llamada 
+  a la funcion, separados por comas
+	<> Soporta * para dar soporte a todos los grupos del sistema.
+	<> Soporta el grupo llamado "anonymous" para llamar a esa funcion sin ningun tipo de autenticacion. 
+           (Este grupo no esta incluido en *)
+
+********************************************************************
+
+
+**********************************
+****      Binary plugin          ******
+**********************************
+
+Los ejecutables/binarios que queramos exportar por n4d han de guardarse en el directorio /usr/share/n4d/binary-plugins
+Ej.: force-remote-login
+
+## Para crear ficheros de configuracion existe el binario n4d-create-conf. El fichero de configuracion sera creado
+# en el directorio base en el que se este ejecutando n4d-create-conf
+
+USAGE:
+	n4d-create-conf -i PLUGIN_FILE -t {python|binary}
+	n4d-create-conf -t remote
+
+##
+
+### Fichero que de configuracion de la clase que ha de estar en /etc/n4d/conf.d
+# n4d-create-conf -i force-remote-login -t binary
+# force-remote-login_conf
+
+[SETUP]
+type=binary
+path=force_remote_login
+class=ForceRemoteLogin
+perms=admin
+
+###
+
+Este es un fichero que define la configuracion de la exportacion de este binario en el servicio:
+- Es de tipo binario
+- El binario que se importa se llama force-remote-login (localizado en el directorio /usr/share/n4d/binary-plugins)
+- Nombre de la clase que se recomienda ser igual al nombre del binario
+- args es un campo opcional que puede no aparecer en donde se configuran los argumentos que han 
+  de pasarse al ejecutable separados por comas.
+- El listado de grupos al que se le permite el uso de esta funcion separados por comas.
+	<> Soporta * para dar soporte a todos los grupos del sistema.
+	<> Soporta el grupo llamado "anonymous" para llamar a esa funcion sin ningun tipo de autenticacion. 
+           (Este grupo no esta incluido en *)
+
+
+#### Configuracion alternativa de plugins binarios
+
+Tambien se soporta un estilo de configuracion de binarios similar a los plugins de python:
+
+[SETUP]
+type=binary
+path=lliurex_mirror_non_gtk
+class=LliurexMirror
+[METHODS]
+update=adm,admins,admin
+list=anonymous
+
+##### [!] Posibles errores [!] #####
+
+Hay que asegurarse de que la clave path del fichero de configuracion no contiene caracteres que no puedan usarse 
+en la definicion de una clase o funcion de python (como por ejemplo - \ , ), ya que se genera un fichero temporal de python para darle soporte 
+al binario desde n4d.
+
+********************************************************************
+
+**********************************
+****   Desabilitar modulos     *****
+**********************************
+
+Existe el directorio en /etc/n4d/disable.d , entonces para deshabilitar cualquier modulo lo unico que tenemos que hacer es mover los
+ficheros de configuracion del directorio /etc/n4d/cond.d a dicho directorio y reiniciar el servicio del n4d.
+
+********************************************************************
+
+
+********************************************
+****   Variables y metodos generales    *****
+********************************************
+
+Al inicio del arranque del servicio del n4d se ejecutan los scripts que estan en el directorio /usr/share/n4d/xmlrpc-server/custom-variables/.
+Todo lo que este en dichos scripts sera accesible desde cualquier lugar. Ejemplo:
+creamos un fichero /usr/share/n4d/xmlrpc-server/custom-variables/lost.py, con el contenido:
+
+def calcular_suma(a,b):
+	return a+b
+numeros = [4,8,15,16,23,42]
+
+Ahora creamos un plugin en /usr/share/n4d/python-plugins/calculos.py, con el contenido:
+
+Class Golem:
+	def calculadora(num):
+		return calcular_suma(num,numeros[0])
+
+Asi desde dentro del plugin se puede acceder a todas las funciones y todas las variables de dicho fichero.
+
+********************************************************************
+
+
+**********************************
+****      Remote plugin        ******
+**********************************
+
+Este plugin hace que las funciones que le indiquemos en realidad las realice otro servidor de n4d,
+de forma que para el cliente sea transparente a quien le esta pidiendo la operacion.
+
+Ejecutando el binario "n4d-create-conf -t remote", se imprime en pantalla un ejemplo de fichero de configuracion remoto.
+
+[SETUP]
+type=remote          
+remoteip=node-254.87654321.cap
+order=500
+[METHODS]
+add_user=admin,teachers
+add_generic_users=admin,teachers
+delete_student=admin,teachers
+
+* remoteip : puedes poner cualquier direccion que sepa resolver tu ordenador, asi puedes poner una ip
+o un nombre de dominio.
+
+* order : se le asigna un orden de preferencia, en el cual el numero mas bajo es el mas preferente. Esto
+esta pensado para poder tener distintos ficheros de control remoto y poder asignar preferencia a uno u a otro.
+                                1 > 500 > 1000
+                                
+En la seccion de methods se indican las funciones que quieres desviar, no es necesario
+indicar los usuarios que lo pueden ejecutar, ya que no hace caso de ello.
+
+********************************************************************
+
+
+**********************************
+****   Autentificaciones       ******
+**********************************
+
+Para hacer un cliente desde python para ejecutar una accion puedes hacerlo de la siguiente forma.
+
+    #!/usr/bin/env python
+    # coding = utf-8
+    from xmlrpclib import *
+    user="lliurex"
+    password="lliurex"
+    user_info=(user,password)
+    server = ServerProxy ("https://localhost:9779") # Conexion con el servidor. Por defecto siempre escucha en el puerto 9779
+    server.get_file_from_server(user_info,"FileOperations","/usr/share/n4d/xmlrpc-server/core.py")
+    
+En esta ultima linea se define como acceder a las funciones:
+	server  es el objeto.
+	get_file_from_server es la funcion que quieres utilizar. Estas funciones son solo las que se estan exportando en el fichero de configuracion.
+		El funcionamiento de como se usa es el siguiente:
+			primer_parametro : Puede ser una tupla, una cadena de caracteres o una cadena vacia.
+					* tupla : nombre_usuario, password.
+					* cadena_no_vacia : Comprobara si coincide dicha cadena con una clave maestra del N4D.
+						Si coincide podras realizar cualquier tarea.Dicha cadena se encuentra en /etc/n4d/key y
+						solo se puede leer por root. Ademas si la comprobacion falla 3 veces se cambia para evitar
+						ataques de fuerza bruta.
+					* cadena_vacia : Si se le pasa una cadena vacia se esta indicando que se quiere realizar dicha accion
+						como anonimo. Para ello la funcion tiene que soportar que sea ejecutado por un usuario anonimo.
+						
+
+********************************************************************
+
+
+***********************************
+*****       One shot                 *****
+***********************************
+
+En directorio /etc/n4d/one-shot se pueden guardar scripts (con permisos de ejecucion) que seran ejecutados en cuanto sea reiniciado el servicio de n4d,
+( "service n4d restart" ), esperando hasta que no exista ninguna ejecucion de /usr/bin/dpkg si fuera necesario para no interferir con la instalacion/configuracion
+de ningun paquete. 
+Una vez ejecutados, los scripts seran borrados del sistema.
+
+********************************************************************
+

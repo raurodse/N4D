@@ -1,0 +1,8 @@
+[SETUP]
+type=python
+path=SocketManager.py
+class=SocketManager
+[METHODS]
+request_socket=adm,admin,admins,teachers
+start_socket=adm,admin,admins,teachers
+close_socket=adm,admin,admins,teachers

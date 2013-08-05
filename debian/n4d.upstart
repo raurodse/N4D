@@ -1,0 +1,7 @@
+respawn
+respawn limit 15 5
+start on n4d-start and started networking
+stop on (runlevel [06] or n4d-stop)
+script
+	/usr/sbin/n4d-server 
+end script

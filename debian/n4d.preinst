@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+GOLEM_FILE="/etc/n4d/conf.d/golem"
+FILEOPERATIONS_FILE="/etc/n4d/conf.d/fileoperations"
+
+
+
+case "$1" in
+   upgrade)
+
+	if dpkg --compare-versions "$2" lt 0.80.2; then
+		if [ -e $GOLEM_FILE ]; then
+			rm $GOLEM_FILE
+		fi
+
+		if [ -e $FILEOPERATIONS_FILE ]; then
+			rm $FILEOPERATIONS_FILE
+		fi
+		
+		rm -f /usr/share/n4d/python-plugins/*.pyc
+	fi
+
+   ;;
+
+   install|abort-upgrade)
+
+   ;;
+
+   *)
+       exit 1
+   ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

@@ -1,0 +1,726 @@
+n4d (0.81.4) precise; urgency=low
+
+  * UNRELEASED
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 30 Jul 2013 13:09:43 +0200
+
+n4d (0.81.3) precise; urgency=high
+
+  * Fixed offline_getvalues
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 25 Jul 2013 13:21:46 +0200
+
+n4d (0.81.2) precise; urgency=high
+
+  * First release without server, client and lliurex plugins
+  * Fixed offline_getvalues in n4d-vars
+  * n4d-vars uses n4d service when it is running, otherwise it uses offline_getvalues
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 23 Jul 2013 11:15:17 +0200
+
+n4d (0.81) precise; urgency=low
+
+  * Basic print changes on n4d-server
+  * Fixed n4d-create-conf conf output path
+  * n4d-vars reads variables even with n4d stopped
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 08 Jul 2013 09:33:51 +0200
+
+n4d (0.80.9) precise; urgency=low
+
+  * Now it's really fixed
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 08 Jul 2013 09:22:42 +0200
+
+n4d (0.80.8) precise; urgency=low
+
+  * Fixed password change
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 04 Jul 2013 18:35:06 +0200
+
+n4d (0.80.7) precise; urgency=high
+
+  * Fixed teachers groups. No longer tries to add to tcos groups
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 02 Jul 2013 13:18:19 +0200
+
+n4d (0.80.6) precise; urgency=high
+
+  * Fixed USER NOT FOUND
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 01 Jul 2013 08:11:40 +0200
+
+n4d (0.80.5) precise; urgency=low
+
+  * Fixed harvester functionality
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 01 Jul 2013 08:10:43 +0200
+
+n4d (0.80.4) precise; urgency=high
+
+  * Fixed gescen importation
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 26 Jun 2013 14:41:49 +0200
+
+n4d (0.80.3) precise; urgency=high
+
+  * Fixed golem perms
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 20 Jun 2013 17:58:25 +0200
+
+n4d (0.80.2) precise; urgency=low
+
+  * Fixed minor bug
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Thu, 20 Jun 2013 17:41:53 +0200
+
+n4d (0.80.1) precise; urgency=low
+
+  * Fixed NetShareOperations with the new /net path
+  * Fixed VariablesManager for clients
+
+ -- Hector Garcia Huerta <cless@anubis.lliurex.fs>  Tue, 18 Jun 2013 13:08:41 +0200
+
+n4d (0.80) precise; urgency=low
+
+  [ Raul Rodrigo Segura ]
+  * Correctly assigned rc start and stop
+  * n4d-createconf regex fixed
+  [ Hector Garcia Huerta ]
+  * get_variable full info returns wether it's remote or not
+  * fixed ip secured functions
+  * Freezing and unfreezing groups back to life
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 17 Jun 2013 11:05:16 +0200
+
+n4d (0.79.8) precise; urgency=low
+
+  * VariablesManager tries three times to get a remote variable in case of failure to connect.
+
+ -- Hector Garcia Huerta <cless@anubis.lliurex.fs>  Thu, 13 Jun 2013 20:36:08 +0200
+
+n4d (0.79.7) precise; urgency=low
+
+  * Update function on variable
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Thu, 13 Jun 2013 20:27:26 +0200
+
+n4d (0.79.6) precise; urgency=low
+
+  * N4D start on 19 rc. Now is before libnss-ldap 
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Wed, 12 Jun 2013 20:26:40 +0200
+
+n4d (0.79.5) precise; urgency=low
+
+  * Updated by Angel
+
+ -- Angel Berlanas Vicente <angel.berlanas@gmail.com>  Tue, 11 Jun 2013 12:09:21 +0200
+
+n4d (0.79.4) precise; urgency=high
+
+  * now n4d launcher emit n4d signal with no-wait 
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Fri, 08 Jun 2013 10:24:13 +0200
+
+n4d (0.79.3) precise; urgency=high
+
+  * N4D start when networking has started
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Fri, 07 Jun 2013 10:24:13 +0200
+
+n4d (0.79.2) precise; urgency=low
+
+  * Added setgid to users folder
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Fri, 07 Jun 2013 10:21:22 +0200
+
+n4d (0.79.1) precise; urgency=low
+
+  * Fixed Variables Manager bug when using add_variable
+  * Fixed NetFilesManager
+
+ -- Hector Garcia Huerta <cless@anubis.lliurex.fs>  Fri, 07 Jun 2013 08:50:52 +0200
+
+n4d (0.78.9) precise; urgency=low
+
+  * Fixed upstart
+  * Fixed remote variables
+  * Fixed ldapmanager to show admins in llum
+
+ -- Hector Garcia Huerta <cless@anubis.lliurex.fs>  Mon, 03 Jun 2013 22:20:45 +0200
+
+n4d (0.78.8) precise; urgency=low
+
+  * Added log
+
+ -- Hector Garcia Huerta <cless@anubis.lliurex.fs>  Fri, 31 May 2013 10:12:52 +0200
+
+n4d (0.78.7) precise; urgency=low
+
+  * Fixed typo
+  * Added is-controlled option to n4d-modules. Writes 'TRUE' or 'FALSE'
+  * Added is_controlled_startup to n4d as a basic function. Returns True or False
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Tue, 28 May 2013 14:29:12 +0200
+
+n4d (0.78.6) precise; urgency=low
+
+  * Local admin from server can login on llum 
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Tue, 28 May 2013 14:17:25 +0200
+
+n4d (0.78.5) precise; urgency=low
+
+  * Commented localereset line
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Mon, 27 May 2013 20:07:29 +0200
+
+n4d (0.78.4) precise; urgency=low
+
+  * Semi dummy upgrade
+
+ -- Hector Garcia Huerta <cless@anubis.lliurex.fs>  Mon, 27 May 2013 14:22:26 +0200
+
+n4d (0.78.3) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Fixed locale reset
+
+  [ Raul Rodrigo Segura ]
+  * Change path to rsync when create net home folders
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Fri, 24 May 2013 11:35:47 +0200
+
+n4d (0.78.2) precise; urgency=low
+
+  * Teachers are members of epoptes group
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Tue, 07 May 2013 10:20:29 +0200
+
+n4d (0.78.1) precise; urgency=low
+
+  * Fixed https webpage. Showing methods in browser should work again
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 02 May 2013 08:11:22 +0200
+
+n4d (0.78) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Added folder to use support classes inside plugins. INCEPTION
+
+  [ Raul Rodrigo Segura ]
+  * Removed register machine. This is moved to Dnsmasq 
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Mon, 22 Apr 2013 13:47:00 +0200
+
+n4d (0.77) precise; urgency=low
+
+  * Kickstarter feature done. Validate user returns list of user groups
+  * Fixed startup boot 
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 15 Apr 2013 12:45:42 +0200
+
+n4d (0.76) precise; urgency=low
+
+  * VariablesManager now stores each variable in an independent file
+  * New llxvars wrapper available for every plugin
+  * Updated golem and ldapmanager to llxvars wrapper
+  * Updated Golem conf files permissions
+  * Frozen users are broken for now
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 27 Mar 2013 08:46:28 +0100
+
+n4d (0.75) precise; urgency=low
+
+  * VariablesManager won't overwrite variables file when failing to load it
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Fri, 15 Mar 2013 12:05:07 +0100
+
+n4d (0.74.1) precise; urgency=low
+
+  * Fixed wrong path for configured-services
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 13 Mar 2013 09:50:05 +0100
+
+n4d (0.74) precise; urgency=low
+
+  * Adding validate_user(user,password) function support
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 12 Mar 2013 13:41:54 +0100
+
+n4d (0.73) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Sending files via sockets seems to work
+  * Fixed install paths
+  * Changed n4d-modules paths due to changes in install paths
+  * Fixed secured functions
+  * added get_all_ip function to core
+  * added register_credentials function to core
+
+  [ Raul Rodrigo Segura ]
+  * Fixed read_inbox bug in VariablesManager
+  
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 27 Feb 2013 12:58:36 +0100
+
+n4d (0.72) precise; urgency=low
+
+  * Fixed fatal bug on debian helper to install n4d-vars
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Wed, 27 Feb 2013 09:20:05 +0100
+
+n4d (0.71) precise; urgency=low
+
+  * Dummy upgrade
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 26 Feb 2013 13:40:31 +0100
+
+n4d (0.70) precise; urgency=low
+
+  * Supporting startup parameters: controlled for controlled services and boot for 
+     executing startup only on boot
+  * Added n4d token when starting the service in /tmp/.n4d_pid containing its pid
+  * n4d-vars returns 1 on execution errors
+  * Fixed VariablesManager bug when adding variables
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 21 Feb 2013 09:44:34 +0100
+
+n4d (0.69) precise; urgency=low
+
+  * Fixed ConfigurationManager bug when loading etc files
+  * Work in progress on SocketManager to support sending files
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 20 Feb 2013 11:21:25 +0100
+
+n4d (0.68) precise; urgency=low
+
+  * n4d-modules enable-plugin supports the reloading of an already loaded plugin
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 18 Feb 2013 12:13:59 +0100
+
+n4d (0.67) precise; urgency=low
+
+  * removed n4d-manager binary. Deprecated
+  * Added log to one shots
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 18 Feb 2013 10:03:32 +0100
+
+n4d (0.66) precise; urgency=low
+
+  * Wip on supporting pandora server
+  * n4d-vars createjson offers default initialization function
+  * n4d-modules to manage loading and unloading of modules and npackages
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 13 Feb 2013 09:27:22 +0100
+
+n4d (0.65) precise; urgency=low
+
+  * One shot tries to remove script instead of dying
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 07 Feb 2013 18:02:29 +0100
+
+n4d (0.64) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Forcing variable file writing when it needs to
+  * Support from core to load new modules without restarting the service
+  * Fixed bug in Variables Manager initialization function
+
+  [ Raul Rodrigo Segura ]
+  * Fixed error in prerm autocompletion using n4d helper
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 05 Feb 2013 13:40:02 +0100
+
+n4d (0.63) precise; urgency=low
+
+  [ Raul Rodrigo Segura ]
+  * Debhelper test json format 
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Tue, 05 Feb 2013 13:10:31 +0100
+
+n4d (0.62) precise; urgency=low
+
+  * Shielded plugin loading.
+  * Shieldded RegisterMachine plugin
+  
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Mon, 04 Feb 2013 09:16:35 +0100
+
+n4d (0.61) precise; urgency=low
+
+  * Added more exception information
+  * n4d-vars support creating a json file that configures both 
+     initialization-dependent and usage-dependent variables
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 29 Jan 2013 08:46:55 +0100
+
+n4d (0.60) precise; urgency=low
+
+  * Fixed lock file bug in VariablesManager
+  * Capture core exception when calling any variable
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Thu, 24 Jan 2013 12:13:54 +0100
+
+n4d (0.59) precise; urgency=low
+
+  * n4d-vars createjson functionality done, supporting multiple variables as
+    a parameter
+  * n4d-vars readinbox, emptytrash and initvalues functionality done
+  * VariablesManager now supports newer init_values functionality
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 23 Jan 2013 14:25:36 +0100
+
+n4d (0.58) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * None can finally be used as a return value
+  * Added n4d-vars to read and set variables
+  * Several changes in VariablesManager to support None
+
+  [ Raul Rodrigo Segura ]
+  * get_methods support class filter  
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Mon, 14 Jan 2013 09:19:29 +0100
+
+n4d (0.57) precise; urgency=low
+
+  * Fixed n4d-create-conf method discovery
+  * Apt method with dependences support
+  * Added n4d ID value and a free(no-authentication) method to get it.
+  * Added N4D tickets support as an alternative authentication process.
+     Plugin not included in this binary file.
+  * Added own ip discovery in core
+  * Added user secured functions
+  * IP from incomming requests is now available inside core
+  * Better armored against unavailable functions
+  * Returns new CLASS_NOT_FOUND value
+  * Core now has objects and configurationmanager plugins inside it as globals
+  * Server now serves allowed functions documentation as an http response
+  * n4d-client has a -r option to read n4d key automatically
+  * Adding read_inbox and empty_trash functions to VariablesManager confile
+  * Fixed child port inheritance 
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 13 Nov 2012 09:53:25 +0100
+
+n4d (0.56) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Added in a previous unknown version, added methods support for binary plugins
+  * Fixed LdapManager missing :
+  * Added support to disable startup services
+
+  [ Raul Rodrigo Segura ]
+  * Added debhelper for n4d vars
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Fri, 02 Nov 2012 12:52:04 +0100
+
+n4d (0.55) precise; urgency=low
+
+  [ Raul Rodrigo Segura ]
+  * Added support to launch method on startup of plugins.
+  
+  [ Hector Garcia Huerta ]
+  * Added variables support as a plugin.
+  * Added support to launch apt methods of every single plugin
+     with a single n4d request.
+  * Added support to add an existing system user as a ldap admin.
+  * Added samba support to LdapManager
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Wed, 11 Jul 2012 13:18:04 +0200
+
+n4d (0.51) precise; urgency=low
+
+  * Added perl plugins support
+
+ -- Hector Garcia Huerta <hectorgh@gmail.com>  Tue, 24 Apr 2012 13:08:49 +0200
+
+n4d (0.50) precise; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Added logger on dispatch function
+
+  [ Raul Rodrigo Segura ]
+  * First Pandora release 
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Tue, 27 Mar 2012 11:08:27 +0200
+
+n4d (0.43) unstable; urgency=low
+
+  [ Hector Garcia Huerta ]
+  * Added support for hooks when adding user
+  * Fixed logged user discovery
+  * Send homework to teachers supports utf-8 files now
+  * Setting up a folder to send homeworks to now checks ownership first
+  * Added secure socket support 
+  * TeacherManager functionality changed to sockets
+
+  [ Raul Rodrigo Segura ]
+  * PeterPan supports args 
+  * Golem and GesitaManager add hooks
+  * Order list when reading for Plugins and Hooks on PeterPan 
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Thu, 23 Feb 2012 11:56:47 +0100
+
+n4d (0.42) unstable; urgency=low
+
+  * get_teacher_list support
+  * one-shot functionality ready
+  * send homework to teachers support
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Thu, 19 Jan 2012 13:28:14 +0100
+
+n4d (0.41) unstable; urgency=low
+
+  * fixed user 101
+  * added password cache as a method to stop asking pam every time.
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 05 Oct 2011 09:54:04 +0200
+
+n4d (0.40) unstable; urgency=low
+
+  * added multiple accounts for remote functions
+  * Bypassed ConfigParser lowercase problem
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Thu, 29 Sep 2011 14:31:23 +0200
+
+n4d (0.39) unstable; urgency=low
+
+  * dummy upgrade
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Thu, 29 Sep 2011 14:22:17 +0200
+
+n4d (0.38) unstable; urgency=low
+
+  * Added teachers to partial importation
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Thu, 29 Sep 2011 14:06:00 +0200
+
+n4d (0.37) unstable; urgency=low
+
+  * Added add_user with generic functionality
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Thu, 29 Sep 2011 09:38:19 +0200
+
+n4d (0.36) unstable; urgency=low
+
+  * Fixed n4d-client
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Tue, 27 Sep 2011 14:15:46 +0200
+
+n4d (0.35) unstable; urgency=low
+
+  * fixed golem permissions
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Tue, 27 Sep 2011 14:12:04 +0200
+
+n4d (0.34) unstable; urgency=low
+
+  * fixed n4d permissions
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Tue, 27 Sep 2011 13:55:27 +0200
+
+n4d (0.33) unstable; urgency=low
+
+  * trying to fix gescen
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Mon, 26 Sep 2011 11:50:23 +0200
+
+n4d (0.32) unstable; urgency=low
+
+  * Trying to support unassigned group
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Fri, 23 Sep 2011 08:38:35 +0200
+
+n4d (0.31) unstable; urgency=low
+
+  * Armoring xml parsing
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Thu, 22 Sep 2011 13:57:46 +0200
+
+n4d (0.30) unstable; urgency=low
+
+  * Added tool to create plugins
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 21 Sep 2011 13:30:32 +0200
+
+n4d (0.29) unstable; urgency=low
+
+  * Fixed n4d-client
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 21 Sep 2011 13:27:40 +0200
+
+n4d (0.28) unstable; urgency=low
+
+  * Fixed class_skel for binary plugins
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 21 Sep 2011 13:20:43 +0200
+
+n4d (0.27) unstable; urgency=low
+
+  * Dummy upgrade
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 21 Sep 2011 13:19:45 +0200
+
+n4d (0.26) unstable; urgency=low
+
+  * Added getmethods function both in Golem and n4d-client
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 21 Sep 2011 12:12:49 +0200
+
+n4d (0.25) unstable; urgency=low
+
+  * Fixed random password generation
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 21 Sep 2011 09:43:11 +0200
+
+n4d (0.24) unstable; urgency=low
+
+  * Fixed binary plugins
+  * Added n4d-client executable
+  * Added binary and python configuration file skels
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Tue, 20 Sep 2011 10:26:39 +0200
+
+n4d (0.23) unstable; urgency=low
+
+  * Fixed remote function logic
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Mon, 19 Sep 2011 12:39:14 +0200
+
+n4d (0.22) unstable; urgency=low
+
+  * Dummy upgrade
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Mon, 19 Sep 2011 12:36:54 +0200
+
+n4d (0.21) unstable; urgency=low
+
+  * Solved bug on test
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Mon, 19 Sep 2011 12:36:19 +0200
+
+n4d (0.20) unstable; urgency=low
+
+  * Solved bug on test 
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Mon, 19 Sep 2011 12:29:22 +0200
+
+n4d (0.19) unstable; urgency=low
+
+  * Armored n4d when importing xml files
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Wed, 14 Sep 2011 11:18:08 +0200
+
+n4d (0.18) unstable; urgency=low
+
+  * Register plugin work
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Wed, 14 Sep 2011 11:11:14 +0200
+
+n4d (0.17) unstable; urgency=low
+
+  * New version of register plugin
+  * Group descriptions allow special characters
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Tue, 06 Sep 2011 13:17:42 +0200
+
+n4d (0.16) unstable; urgency=low
+
+  * Clean code
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Tue, 06 Sep 2011 13:13:25 +0200
+
+n4d (0.15) unstable; urgency=low
+
+  * Fixed configuration reading
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Tue, 06 Sep 2011 13:09:53 +0200
+
+n4d (0.14) unstable; urgency=low
+
+  * solved bug with postinst
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Mon, 05 Sep 2011 12:02:29 +0200
+
+n4d (0.13) unstable; urgency=low
+
+  * Solved bug with pam auth
+  * Removed depend with Lliurex-pki
+  * Added machine register plugin
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Wed, 31 Aug 2011 10:16:26 +0200
+
+n4d (0.12) unstable; urgency=low
+
+  * Fixed password change for admins and others
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Thu, 28 Jul 2011 14:05:45 +0200
+
+n4d (0.11) unstable; urgency=low
+
+  * Fixed uid generation for generic_users
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Tue, 26 Jul 2011 10:58:48 +0200
+
+n4d (0.10) unstable; urgency=low
+
+  * created n4d-server-scripts package
+  * fixed anonymous functions
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Mon, 25 Jul 2011 14:36:42 +0200
+
+n4d (0.09) unstable; urgency=low
+
+  * Fixed anonymous calls
+  * Fixed password regeneration
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Fri, 22 Jul 2011 09:34:44 +0200
+
+n4d (0.08) unstable; urgency=low
+
+  * Added conflict with lliurex-lwat
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Fri, 15 Jul 2011 11:01:45 +0200
+
+n4d (0.07) unstable; urgency=low
+
+  * change location for database for teachers and other passwords
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Fri, 15 Jul 2011 10:26:56 +0200
+
+n4d (0.06) unstable; urgency=low
+
+  * fixed csync replication
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 13 Jul 2011 09:28:48 +0200
+
+n4d (0.05) unstable; urgency=low
+
+  * Fixed ldap password file reading
+  * Armored config reader function
+  * Added plugin to execute python files in a given path
+  * Fixed some errors in golem
+  * lliurex-cap support for master servers
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Wed, 06 Jul 2011 11:32:21 +0200
+
+n4d (0.04) unstable; urgency=low
+
+  * Fixed function to remove special characters
+  * Catching ldapmanager exception if it can't connect to ldap server
+  * Create home for generic other users 
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Fri, 01 Jul 2011 14:36:59 +0200
+
+n4d (0.02) unstable; urgency=low
+
+  * Add directory and change location for sqlite database
+
+ -- Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>  Fri, 01 Jul 2011 12:58:26 +0200
+
+n4d (0.01) unstable; urgency=low
+
+  * Initial release.
+
+ -- Hector Garcia Huerta <lliurex_devel1@edu.gva.es>  Fri, 25 Mar 2011 09:28:24 +0100

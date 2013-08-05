@@ -1,0 +1,307 @@
+#!/usr/bin/env python
+
+import xmlrpclib
+import sys
+import json
+import os
+import os.path
+import shutil
+import ConfigParser
+
+class N4dModules:
+	
+	ENABLED_PLUGINS_DIR="/etc/n4d/conf.d/"
+	DISABLED_PLUGINS_DIR="/etc/n4d/disabled.d/"
+	ENABLED_SERVICES_DIR="/etc/n4d/controlled-startups.d/"
+	PLUGINS_INSTALL_DIR="/usr/share/n4d/"
+	
+	def __init__(self):
+		
+		self.commands=["list-enabled","list-disabled","list-controlled-services","list-uncontrolled-services","is-controlled","enable-plugin","disable-plugin","enable-control","disable-control", "load-module", "load-new-modules","help"]
+		self.client=xmlrpclib.ServerProxy("https://localhost:9779",allow_none=True)
+		
+	#def init
+	
+	def read_key(self):
+		try:
+			f=open("/etc/n4d/key")
+			key=f.readline().strip()
+			f.close()
+			return key
+		except:
+			return None
+		
+	#def readkey
+	
+	def list_conf_files(self,path):
+		
+		file_list=[]
+		
+		for item in os.listdir(path):
+			try:
+				file=path+item
+				config = ConfigParser.ConfigParser()
+				config.optionxform=str
+				config.read(file)
+				ptype=config.get("SETUP","type")
+				pclass_name=config.get("SETUP","class")
+				ppath=config.get("SETUP","path")
+				if ptype=="python":
+					if os.path.exists(N4dModules.PLUGINS_INSTALL_DIR+"python-plugins/" + ppath):
+						file_list.append((file,ptype,pclass_name))
+				if ptype=="binary":
+					if os.path.exists(N4dModules.PLUGINS_INSTALL_DIR+"binary-plugins/" + ppath):
+						file_list.append((file,ptype,pclass_name))
+						
+			except Exception as e:
+				print(e)
+					
+		return file_list
+			
+		
+	#def list_conf_files
+	
+	def list_enabled(self):
+		
+		file_list=self.list_conf_files(N4dModules.ENABLED_PLUGINS_DIR)
+		
+		for item in file_list:
+			path,x,y=item
+			print("["+y+"] " + path)
+		
+	#def list_enabled
+	
+	def list_disabled(self):
+		
+		file_enabled=self.list_conf_files(N4dModules.ENABLED_PLUGINS_DIR)
+		file_disabled=self.list_conf_files(N4dModules.DISABLED_PLUGINS_DIR)
+		
+		for item in file_disabled:
+			if item not in file_enabled:
+				path,x,y=item
+				print("["+y+"] " + path)
+		
+	#def list_disabled
+	
+	def enable_plugin(self,plugin_list):
+		
+		key=self.read_key()
+		if key==None:
+			self.root_error()
+			
+		for plugin in plugin_list:
+			index=plugin.rfind("/")+1
+			plugin_file_name=plugin[index:]
+			sys.stdout.write("* Enabling " + plugin_file_name + " ... ")
+
+			if N4dModules.ENABLED_PLUGINS_DIR + plugin_file_name !=plugin:
+			
+				try:
+					shutil.move(plugin,N4dModules.ENABLED_PLUGINS_DIR)
+				except Exception as e:
+					print("FAILED [1]")
+					print("\t"+str(e))
+					continue
+					
+			try:
+				
+				status,ret=self.client.load_module(key,N4dModules.ENABLED_PLUGINS_DIR+plugin_file_name)
+				if status==True and ret==True:
+					print("OK")
+				else:
+					print("FAILED [3]")
+					print("\t"+str(ret))
+			except Exception as e:
+				print("FAILED [2]")
+				print("\t"+str(e))
+				continue
+
+			
+		
+	#def enable_plugin
+	
+	def disable_plugin(self,plugin_list):
+		
+		key=self.read_key()
+		if key==None:
+			self.root_error()
+			
+		for plugin in plugin_list:
+			index=plugin.rfind("/")+1
+			plugin_file_name=plugin[index:]
+			sys.stdout.write("* Disabling " + plugin_file_name + " ... ")
+
+			try:
+				shutil.move(plugin,N4dModules.DISABLED_PLUGINS_DIR)
+			except Exception as e:
+				print("FAILED [1]")
+				print("\t"+str(e))
+				continue
+			try:
+				status,ret=self.client.unload_module(key,N4dModules.DISABLED_PLUGINS_DIR+plugin_file_name)
+				if status==True and ret==True:
+					print("OK")
+				else:
+					print("FAILED [3]")
+					print("\t" + str(ret))
+					
+			except Exception as e:
+				print("FAILED [2]")
+				print("\t" + str(e))
+				continue
+				
+	
+	def list_controlled(self):
+		
+		ret=self.client.get_service_list()
+		
+		for item in ret["enabled"]:
+			print item
+		
+	#def list_controlled
+	
+	def is_controlled(self,plugin):
+		
+		try:
+			plugin=plugin[0]
+			ret=self.client.get_service_list()
+		
+			if plugin not in ret["enabled"]:
+				print "FALSE"
+			else:
+				print "TRUE"
+		except Exception as e:
+			print e
+	
+	def list_uncontrolled(self):
+		
+		ret=self.client.get_service_list()
+		for item in ret["disabled"]:
+			print item
+		
+	#def list_uncontrolled
+	
+	def enable_control(self,plugin_list):
+		
+		key=self.read_key()
+		if key==None:
+			self.root_error()
+			
+		ret=self.client.get_service_list()
+		
+		for item in plugin_list:
+			
+			if item in ret["disabled"]:
+				sys.stdout.write("* Enabling " + item + " control ... ")
+				try:
+					f=open(N4dModules.ENABLED_SERVICES_DIR+item,"w")
+					f.close()
+					print("OK")
+				except Exception as e:
+					print("FAILED")
+					print("\t" + str(e))
+				
+		
+		
+	#def enable_control
+	
+	def disable_control(self,plugin_list):
+		
+		key=self.read_key()
+		if key==None:
+			self.root_error()
+			
+		ret=self.client.get_service_list()
+		
+		for item in plugin_list:
+			if item in ret["enabled"]:
+				sys.stdout.write("* Disabling " + item + " control ... ")
+				try:
+					os.remove(N4dModules.ENABLED_SERVICES_DIR+item)
+					print("OK")
+				except Excecption as e:
+					print("FAILED")
+					print("\t" + str(e))
+		
+	#def disable_control
+	
+	
+	def root_error(self):
+		
+		print("[!] You need user priviledges to execute this option")
+		sys.exit(0)
+		
+	#def root_error
+	
+	def usage(self):
+		
+		print("USAGE: n4d-modules OPTION [PARAMETERS]\n")
+		print("Options:")
+		print("\tlist-enabled")
+		print("\tlist-disabled")
+		print("\tlist-controlled-services")
+		print("\tlist-uncontrolled-services")
+		print("\is-controlled PLUGIN")
+		print("")
+		print("\tenable-plugin CONFPATH [CONFPATH2...CONFPATHn]")
+		print("\tdisable-plugin CONFPATH [CONFPATH2...CONFPATHn]")
+		print("")
+		print("\tenable-control PLUGIN [PLUGIN2...PLUGINn]")
+		print("\tdisable-control PLUGIN [PLUGIN2...PLUGINn]")
+		print("")
+		print("\tload-module PLUGIN [PLUGIN2...PLUGINn]")
+		print("\tload-new-modules")
+		print("")
+		
+	#def usage
+	
+	def parse_input(self,data):
+
+		if len(data) <2 :
+			self.usage()
+		else:
+			if data[1] not in self.commands:
+				self.usage()
+			else:
+				if data[1] == "help":
+					self.usage()
+				if data[1] == "list-enabled":
+					self.list_enabled()
+				if data[1] == "list-disabled":
+					self.list_disabled()
+				if data[1] == "list-controlled-services":
+					self.list_controlled()
+				if data[1] == "list-uncontrolled-services":
+					self.list_uncontrolled()
+				if data[1] == "enable-plugin":
+					if len(data)>2:
+						self.enable_plugin(data[2:])
+					else:
+						self.usage()
+				if data[1] == "disable-plugin":
+					self.disable_plugin(data[2:])
+				if data[1] == "enable-control":
+					self.enable_control(data[2:])
+				if data[1] == "disable-control":
+					self.disable_control(data[2:])
+				if data[1] == "load-module":
+					self.load_module(data[2:])
+				if data[1]=="is-controlled":
+					self.is_controlled(data[2:])
+
+	#def parse_input
+	
+	
+#class N4dModules
+
+if __name__=="__main__":
+	
+	try:
+		n4d=N4dModules()
+		n4d.parse_input(sys.argv)
+	except Exception as e:
+		pass
+
+	#n4d.getvalues(["VARIABLE1","VARIABLE2"])
+	#n4d.listvars()
+	#n4d.readkey()

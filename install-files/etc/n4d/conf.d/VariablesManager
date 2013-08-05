@@ -1,0 +1,14 @@
+[SETUP]
+type=python
+path=VariablesManager.py
+class=VariablesManager
+[METHODS]
+listvars=anonymous
+get_variables=anonymous
+get_variable=anonymous
+get_variable_list=anonymous
+add_variable=admin,admins,adm
+set_variable=admin,admins,adm
+read_inbox=admin,admins,adm
+empty_trash=admin,admins,adm
+init_variable=admin,admins,adm

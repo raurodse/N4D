@@ -1,0 +1,22 @@
+Source: n4d
+Section: misc
+Priority: standard
+Maintainer: Equipo LliureX <lliurex@gva.es>
+Uploaders: Luis Antonio Garcia Gisbert <garcia_luigis@gva.es>, Angel Berlanas Vicente <aberlanas.gva@gmail.com>, Javier García Escribano <garcia_javesc@gva.es>, Raul Rodrigo Segura <raurodse.gva@gmail.com>, Alfons Lloret Sananton <alloret.gva@gmail.com>, Enrique Medina Gremaldos <lth.gva@gmail.com>, Hector Garcia Huerta <lliurex_devel1@edu.gva.es>, Ignacio Vidal Hurtado <vidal_joshur@gva.es>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.9.3
+
+Package: n4d
+Architecture: all
+Pre-Depends: openssl
+Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-gobject, python-pam, python-openssl, python-netifaces, python-simplejson
+Conflicts: lliurex-lwat
+Description:  Pluggable XMLRPC Server
+ This package configures a xmlrpc server to allow the remote execution of 
+ pluggable functions
+
+Package: n4d-dev
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, perl, python2.7
+Description:  n4d debhelpers
+ This package contains n4d helpers for make debian package
